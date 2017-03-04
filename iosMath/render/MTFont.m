@@ -48,8 +48,15 @@
 
 + (NSBundle*) fontBundle
 {
+    NSBundle * bundle = [NSBundle bundleForClass:[self class]];
+#ifdef FRAMEWORK
+    // Dynamic framework
+    return bundle;
+#else 
+    // Cocoapods
     // Uses bundle for class so that this can be access by the unit tests.
-    return [NSBundle bundleWithURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"mathFonts" withExtension:@"bundle"]];
+    return [NSBundle bundleWithURL:[bundle URLForResource:@"mathFonts" withExtension:@"bundle"]];
+#endif
 }
 
 - (MTFont *)copyFontWithSize:(CGFloat)size
